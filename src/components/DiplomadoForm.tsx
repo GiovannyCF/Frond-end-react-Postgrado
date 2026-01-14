@@ -9,7 +9,7 @@ interface Props {
 
 const initialState = { 
     nombre: "", 
-    version: 1, 
+    version: "", 
     costo: 0, 
     fechaInicio: "", 
     fechaFin: "" 
@@ -36,10 +36,29 @@ export const DiplomadoForm = ({ onSave, itemToEdit, onCancel }: Props) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSave(form, itemToEdit?.id);
+
+        // 1. VALIDACIÓN: Evitar fechas vacías
+        if (!form.fechaInicio || !form.fechaFin) {
+            alert("⚠️ Por favor selecciona ambas fechas");
+            return;
+        }
+
+        // 2. CONVERSIÓN DE TIPOS (La solución al Error 400)
+        const dataToSend = {
+            ...form,
+            // Tu backend pide Version como String y Costo como Number
+            version: String(form.version), 
+            costo: Number(form.costo)
+        };
+
+        console.log("📤 Enviando:", dataToSend);
+        
+        onSave(dataToSend, itemToEdit?.id);
+        
         if (!itemToEdit) setForm(initialState);
     };
 
+    // Estilos reutilizables
     const inputStyle = {
         width: "100%",
         padding: "8px",
@@ -62,6 +81,7 @@ export const DiplomadoForm = ({ onSave, itemToEdit, onCancel }: Props) => {
                 {itemToEdit ? "Editar Diplomado" : "Nuevo Diplomado"}
             </h3>
             
+            {/* NOMBRE */}
             <div>
                 <label style={labelStyle}>Nombre del Diplomado:</label>
                 <input 
@@ -74,12 +94,12 @@ export const DiplomadoForm = ({ onSave, itemToEdit, onCancel }: Props) => {
                 />
             </div>
 
+            {/* VERSIÓN Y COSTO (Lado a Lado) */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
                 <div>
                     <label style={labelStyle}>Versión:</label>
                     <input 
                         name="version" 
-                        type="number" 
                         placeholder="1" 
                         value={form.version} 
                         onChange={handleChange} 
@@ -101,6 +121,7 @@ export const DiplomadoForm = ({ onSave, itemToEdit, onCancel }: Props) => {
                 </div>
             </div>
 
+            {/* FECHAS (Lado a Lado) */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
                 <div>
                     <label style={labelStyle}>Fecha de Inicio:</label>
@@ -126,6 +147,7 @@ export const DiplomadoForm = ({ onSave, itemToEdit, onCancel }: Props) => {
                 </div>
             </div>
 
+            {/* BOTONES */}
             <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
                 <button type="submit" style={{ 
                     cursor: "pointer", 

@@ -23,7 +23,7 @@ export interface Estudiante {
 export interface Diplomado {
     id: string;
     nombre: string;
-    version: number;
+    version: string;
     fechaInicio: string; 
     fechaFin: string;
     costo: number;

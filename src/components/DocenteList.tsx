@@ -29,7 +29,7 @@ export const DocenteList = ({ lista, onEdit, onDelete }: Props) => {
                                 📞 {item.telefono}
                             </td>
                             <td style={{ padding: "8px" }}>
-                                <small>{item.curriculum.substring(0, 50)}...</small>
+                                <small>{(item.curriculum || "Sin info").substring(0, 50)}...</small>
                             </td>
                             <td style={{ textAlign: "center", padding: "8px" }}>
                                 <button onClick={() => onEdit(item)} style={{ marginRight: "5px" }}>✏️</button>
