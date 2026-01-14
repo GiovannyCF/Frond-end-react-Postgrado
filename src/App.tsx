@@ -27,8 +27,7 @@ function App() {
       <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#f4f6f8", minHeight: "100vh" }}>
         <Navbar />
         
-        {/* Aquí se renderizan las páginas según la URL */}
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
+        <div style={{ width: "100%", padding: "0 20px", boxSizing: "border-box" }}>
           <Routes>
             <Route path="/" element={<DiplomadoPage />} />
             <Route path="/docentes" element={<DocentePage />} />
