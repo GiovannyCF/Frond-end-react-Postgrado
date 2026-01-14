@@ -45,6 +45,7 @@ export const NotaForm = ({ onSave, itemToEdit, onCancel, inscripciones, modulos 
             <input name="valor" type="number" value={form.valor} onChange={handleChange} required min="0" max="100" />
 
             <button type="submit">Guardar</button>
+            {itemToEdit && <button type="button" onClick={onCancel}>Cancelar</button>}
         </form>
     );
 };
