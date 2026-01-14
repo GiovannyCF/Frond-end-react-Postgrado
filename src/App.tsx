@@ -1,50 +1,45 @@
-import { useEffect, useState } from 'react';
-import './App.css'; // Asegúrate de que este archivo exista, si no, borra esta línea
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { DiplomadoPage } from "./pages/DiplomadoPage";
+import { DocentePage } from "./pages/DocentePage";
+import { EstudiantePage } from "./pages/EstudiantePage";
+import { ModuloPage } from "./pages/ModuloPage";
+import { InscripcionPage } from "./pages/InscripcionPage";
+import { NotaPage } from "./pages/NotaPage";
 
-// 1. Definimos el "Contrato" (Igual que tu DTO en C#)
-// Nota: Los Guid de C# se convierten en string en TypeScript
-interface Diplomado {
-  id: string;
-  nombre: string;
-  costo: number; // decimal se convierte en number
-  // Puedes agregar más campos si quieres mostrarlos (version, fechaInicio, etc.)
-}
+const Navbar = () => (
+  <nav style={{ padding: "15px", backgroundColor: "#2c3e50", marginBottom: "20px" }}>
+    <div style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
+      <Link to="/" style={linkStyle}>🎓 Diplomados</Link>
+      <Link to="/docentes" style={linkStyle}>👨‍🏫 Docentes</Link>
+      <Link to="/estudiantes" style={linkStyle}>🧑‍🎓 Estudiantes</Link>
+      <Link to="/modulos" style={linkStyle}>📚 Módulos</Link>
+      <Link to="/inscripciones" style={linkStyle}>📝 Inscripciones</Link>
+      <Link to="/notas" style={linkStyle}>📊 Notas</Link>
+    </div>
+  </nav>
+);
+
+const linkStyle = { color: "white", textDecoration: "none", fontWeight: "bold", fontSize: "16px" };
 
 function App() {
-  // 2. Le decimos al estado que guardará un ARRAY de Diplomados
-  const [diplomados, setDiplomados] = useState<Diplomado[]>([]);
-
-  // 3. Pega aquí tu URL de Swagger (Backend)
-  const URL_API = "https://localhost:7043/api/Diplomado"; 
-
-  useEffect(() => {
-    fetch(URL_API)
-      .then(response => response.json())
-      .then((data: Diplomado[]) => {
-        console.log("Datos recibidos del Backend:", data);
-        setDiplomados(data);
-      })
-      .catch(error => console.error("Error conectando:", error));
-  }, []);
-
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>🎓 Lista de Diplomados</h1>
-      <h3>Conectado a .NET Core</h3>
-      
-      {/* Si la lista está vacía, mostramos un mensaje */}
-      {diplomados.length === 0 ? (
-        <p>Cargando datos o no hay diplomados...</p>
-      ) : (
-        <ul>
-          {diplomados.map((item) => (
-            <li key={item.id} style={{ marginBottom: "10px" }}>
-              <strong>{item.nombre}</strong> - Precio: {item.costo} Bs.
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <BrowserRouter>
+      <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#f4f6f8", minHeight: "100vh" }}>
+        <Navbar />
+        
+        {/* Aquí se renderizan las páginas según la URL */}
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
+          <Routes>
+            <Route path="/" element={<DiplomadoPage />} />
+            <Route path="/docentes" element={<DocentePage />} />
+            <Route path="/estudiantes" element={<EstudiantePage />} />
+            <Route path="/modulos" element={<ModuloPage />} />
+            <Route path="/inscripciones" element={<InscripcionPage />} />
+            <Route path="/notas" element={<NotaPage />} />
+          </Routes>
+        </div>
+      </div>
+    </BrowserRouter>
   );
 }
 
